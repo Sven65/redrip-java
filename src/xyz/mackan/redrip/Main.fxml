@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
+   <children>
+      <Pane prefHeight="400.0" prefWidth="600.0">
+         <children>
+          <AnchorPane>
+               <children>
+                  <TextField layoutX="89.0" layoutY="15.0" prefHeight="25.0" prefWidth="162.0" />
+                  <Label layoutX="22.0" layoutY="19.0" text="Subreddit" />
+                  <CheckBox layoutX="74.0" layoutY="115.0" mnemonicParsing="false" text="JPG" />
+                  <CheckBox layoutX="125.0" layoutY="115.0" mnemonicParsing="false" text="PNG" />
+                  <TextField layoutX="332.0" layoutY="15.0" />
+                  <Label layoutX="275.0" layoutY="19.0" text="Amount" />
+                  <Button layoutX="494.0" layoutY="15.0" mnemonicParsing="false" text="Go" />
+                  <Separator layoutX="-1.0" layoutY="62.0" prefHeight="22.0" prefWidth="608.0" />
+                  <Label layoutX="14.0" layoutY="84.0" text="File Types" />
+                  <CheckBox layoutX="188.0" layoutY="115.0" mnemonicParsing="false" text="GIF" />
+                  <CheckBox layoutX="125.0" layoutY="143.0" mnemonicParsing="false" text="GIFV" />
+                  <CheckBox layoutX="188.0" layoutY="143.0" mnemonicParsing="false" text="WEBM" />
+                  <CheckBox layoutX="73.0" layoutY="168.0" mnemonicParsing="false" text="JPEG" />
+                  <CheckBox layoutX="74.0" layoutY="143.0" mnemonicParsing="false" text="MP4" />
+               </children>
+            </AnchorPane>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>
