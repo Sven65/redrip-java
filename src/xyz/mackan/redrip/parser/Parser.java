@@ -56,6 +56,12 @@ public class Parser {
 		return fileURL;
 	}
 	
+	/**
+	 * Parses a GIFV url to mp4
+	 * @param url
+	 * @return
+	 * @throws IOException
+	 */
 	public String gifvToMP4(String url) throws IOException{
 		GIFV gifv = new GIFV(url);
 		return gifv.toMP4();

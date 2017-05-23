@@ -11,10 +11,19 @@ public class GIFV {
 	
 	private String URL;
 	
+	/**
+	 * Creates a new GIFV parser
+	 * @param url
+	 */
 	public GIFV(String url){
 		URL = url;
 	}
 	
+	/**
+	 * Parses a GIFV to MP4
+	 * @return
+	 * @throws IOException
+	 */
 	public String toMP4() throws IOException{
 		Document doc = Jsoup.connect(this.URL).get();
 		
