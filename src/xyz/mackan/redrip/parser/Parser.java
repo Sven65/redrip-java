@@ -51,6 +51,9 @@ public class Parser {
 					fileURL = gfycat.parse(url, "mp4");
 				}
 			break;
+			case "streamable.com":
+				
+			break;
 		}
 		
 		return fileURL;

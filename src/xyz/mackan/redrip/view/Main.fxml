@@ -15,11 +15,11 @@
                   <Label layoutX="22.0" layoutY="19.0" text="Subreddit" />
                   <TextField id="subreddit" fx:id="subreddit" layoutX="89.0" layoutY="7.0" onKeyPressed="#handleKeyDown" prefHeight="25.0" prefWidth="162.0" />
                   <Label layoutX="279.0" layoutY="19.0" text="Amount" />
-                  <TextField id="amountField" fx:id="amountField" layoutX="332.0" layoutY="7.0" />
+                  <TextField id="amountField" fx:id="amountField" layoutX="332.0" layoutY="7.0" onKeyPressed="#handleKeyDown" />
 				  <Label layoutX="24.0" layoutY="54.0" text="Last Post" />                
-                  <TextField id="lastpost" layoutX="89.0" layoutY="50.0" prefHeight="25.0" prefWidth="162.0" />
+                  <TextField id="lastpost" fx:id="lastpost" layoutX="89.0" layoutY="50.0" onKeyPressed="#handleKeyDown" prefHeight="25.0" prefWidth="162.0" />
                   <Label layoutX="274.0" layoutY="54.0" text="Imgur Key" />
-                  <TextField id="imgurKey" fx:id="imgurKey" layoutX="332.0" layoutY="50.0" />
+                  <TextField id="imgurKey" fx:id="imgurKey" layoutX="332.0" layoutY="50.0" onKeyPressed="#handleKeyDown" />
                   
                   <Button id="gobutton" layoutX="494.0" layoutY="38.0" mnemonicParsing="false" onMouseClicked="#handleGoButton" text="Go" />
                   

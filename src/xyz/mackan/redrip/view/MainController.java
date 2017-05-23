@@ -96,6 +96,12 @@ public class MainController {
 	
 	private void handleEverything(){
 		this.reddit = subreddit.getText();
+		this.after = lastpost.getText();
+		
+		if(this.after == null){
+			this.after = "";
+		}
+		
 		String amountString = amountField.getText();
 		
 		if(amountString == null){
@@ -192,6 +198,12 @@ public class MainController {
 								}
 							}
 						}
+						JSONObject current = (JSONObject) submissions.get(submissions.size()-1);
+						JSONObject currentSubmission = (JSONObject) current.get("data");
+						String lastID = (String) currentSubmission.get("id");
+						
+						this.logarea.appendText("\n\nLast Post ID: "+lastID);
+						lastpost.setText(lastID);
 					}
 				} catch (Exception e) {
 					e.printStackTrace();

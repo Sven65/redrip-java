@@ -38,8 +38,8 @@ public class Reddit {
 		
 		
 		String url = String.format("https://www.reddit.com/r/%s/%s.json?limit=%d", sub, sort, amount);
-		if(after != null){
-			url += String.format("&after=t3_{}", after);
+		if(after != null && !after.equals("")){
+			url += String.format("&after=t3_%s", after);
 		}
 		
 		HttpClient client = HttpClientBuilder.create().build();
