@@ -68,5 +68,17 @@ public class StringHelper {
 		return false;
 	}
 	
+	public Boolean isImgurAlbum(String url) throws URISyntaxException{
+		String domain = this.getDomain(url);
+		if(domain.equals("imgur.com") || domain.equals("m.imgur.com")){
+			String ext = this.getExtension(url);
+			System.out.println("EXT = "+ext);
+			if(ext.contains("com/")){
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	
 }

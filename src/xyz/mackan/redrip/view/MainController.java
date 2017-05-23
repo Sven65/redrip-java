@@ -153,6 +153,7 @@ public class MainController {
 							System.out.println("Domain: "+SH.getDomain(url));
 							System.out.println("URL: "+url+"\n");
 							if(!isSelf){
+								System.out.println("ISALBUM "+SH.isImgurAlbum(url));
 								if(SH.isImgurLink(url)){ // If it's an imgur album, download it
 									String gallery = SH.getFilename(url);
 									
@@ -171,7 +172,7 @@ public class MainController {
 											if(SH.isDirectLink(imageUrl, exts)){
 												
 												this.logarea.appendText(String.format("\nFound file of type %s at url %s", SH.getExtension(imageUrl), imageUrl));
-												if(gifvToMP4.isSelected()){
+												if(gifvToMP4.isSelected() && SH.getExtension(imageUrl).equals("gifv")){
 													imageUrl = parser.gifvToMP4(imageUrl);
 												}
 												downloader.downloadFile(imageUrl, String.format("%s/%s/%s", this.reddit, gallery, SH.getFilename(imageUrl)), this.logarea);
@@ -183,10 +184,28 @@ public class MainController {
 								}else{
 									if(SH.isDirectLink(url, exts)){ // If it's a direct link
 										this.logarea.appendText(String.format("\nFound file of type %s at url %s", SH.getExtension(url), url));
-										if(gifvToMP4.isSelected()){
+										if(gifvToMP4.isSelected() && SH.getExtension(url).equals("gifv")){
 											url = parser.gifvToMP4(url);
 										}
 										downloader.downloadFile(url, String.format("%s/%s", this.reddit, SH.getFilename(url)), this.logarea);
+									}else if(SH.isImgurAlbum(url)){
+										String imageHash = SH.getFilename(url);
+										JSONObject image = imgur.getImage(imageHash, this.logarea);
+										
+										JSONObject imageData = (JSONObject) image.get("data");
+										
+										String imageURL = (String) imageData.get("link");
+										
+										if(SH.isDirectLink(imageURL, exts)){
+											
+											this.logarea.appendText(String.format("\nFound file of type %s at url %s", SH.getExtension(imageURL), imageURL));
+											if(gifvToMP4.isSelected() && SH.getExtension(imageURL).equals("gifv")){
+												imageURL = parser.gifvToMP4(imageURL);
+											}
+											downloader.downloadFile(imageURL, String.format("%s/%s", this.reddit, SH.getFilename(imageURL)), this.logarea);
+										}
+										
+										//System.out.println(image.toJSONString());
 									}else{
 										String parsedURL = parser.doParse(url, exts);
 										
