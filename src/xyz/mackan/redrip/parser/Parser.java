@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import xyz.mackan.redrip.StringHelper;
+import xyz.mackan.redrip.parser.filetype.GIFV;
 
 public class Parser {
 	public Parser(){
@@ -53,5 +54,10 @@ public class Parser {
 		}
 		
 		return fileURL;
+	}
+	
+	public String gifvToMP4(String url) throws IOException{
+		GIFV gifv = new GIFV(url);
+		return gifv.toMP4();
 	}
 }

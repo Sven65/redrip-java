@@ -36,6 +36,7 @@ public class MainController {
 	@FXML private CheckBox filetypeMP4;
 	@FXML private CheckBox filetypeWEBM;
 	@FXML private CheckBox filetypeJPEG;
+	@FXML private CheckBox gifvToMP4;
 	@FXML private ChoiceBox<String> sortbox;
 	@FXML private TextArea logarea;
 	
@@ -162,7 +163,11 @@ public class MainController {
 											JSONObject image = (JSONObject) images.get(x);
 											String imageUrl = (String) image.get("link");
 											if(SH.isDirectLink(imageUrl, exts)){
+												
 												this.logarea.appendText(String.format("\nFound file of type %s at url %s", SH.getExtension(imageUrl), imageUrl));
+												if(gifvToMP4.isSelected()){
+													imageUrl = parser.gifvToMP4(imageUrl);
+												}
 												downloader.downloadFile(imageUrl, String.format("%s/%s/%s", this.reddit, gallery, SH.getFilename(imageUrl)), this.logarea);
 											}
 										}
@@ -172,6 +177,9 @@ public class MainController {
 								}else{
 									if(SH.isDirectLink(url, exts)){ // If it's a direct link
 										this.logarea.appendText(String.format("\nFound file of type %s at url %s", SH.getExtension(url), url));
+										if(gifvToMP4.isSelected()){
+											url = parser.gifvToMP4(url);
+										}
 										downloader.downloadFile(url, String.format("%s/%s", this.reddit, SH.getFilename(url)), this.logarea);
 									}else{
 										String parsedURL = parser.doParse(url, exts);
