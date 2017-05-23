@@ -1,3 +1,11 @@
 /bin/
 /target/
 .settings/
+*.png
+*.jpg
+*.gif
+*.bmp
+*.mp4
+*.webm
+*.jpeg
+*.gifv
