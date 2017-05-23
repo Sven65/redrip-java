@@ -11,6 +11,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import javafx.scene.control.TextArea;
+
 public class Reddit {
 	
 	private final String USER_AGENT = "Mozilla/5.0";
@@ -19,7 +21,7 @@ public class Reddit {
 		
 	}
 	
-	public JSONObject getRedditData(String sub, int amount, String sort, String after) throws Exception{
+	public JSONObject getRedditData(String sub, int amount, String sort, String after, TextArea log) throws Exception{
 		
 		JSONParser parser = new JSONParser();
 		
@@ -37,8 +39,8 @@ public class Reddit {
 		
 		HttpResponse response = client.execute(request);
 
-		System.out.println("\nSending 'GET' request to URL : " + url);
-		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
+		log.appendText("Sending 'GET' request to URL : " + url+"\n");
+		log.appendText("Response Code : " + response.getStatusLine().getStatusCode()+"\n");
 
 		BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 

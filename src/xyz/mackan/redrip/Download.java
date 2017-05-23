@@ -1,12 +1,12 @@
 package xyz.mackan.redrip;
 
 import java.io.File;
-/*import java.io.FileWriter;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
-import javax.imageio.ImageIO;*/
+import javax.imageio.ImageIO;
 
+import javafx.scene.control.TextArea;
 
 public class Download {
 
@@ -14,27 +14,31 @@ public class Download {
 		
 	}
 	
-	public void createFolderIfNotExist(String filePath) throws Exception{
+	public void createFolderIfNotExist(String filePath, TextArea logArea) throws Exception{
 		File file = new File(filePath);
 		file.getParentFile().mkdirs();
+		logArea.appendText("\nCreated directory "+file.getParentFile());
 	}
 	
-	public void downloadFile(String imageURL, String savePath) throws Exception{
-		createFolderIfNotExist(savePath);
+	public void downloadFile(String imageURL, String savePath, TextArea logArea) throws Exception{
+		createFolderIfNotExist(savePath, logArea);
 		System.out.println(imageURL);
-		/*BufferedImage image = null;
+		BufferedImage image = null;
         try{
+        	
+        	StringHelper SH = new StringHelper();
 
             URL url = new URL(imageURL);
             image = ImageIO.read(url);
 
-            ImageIO.write(image, "jpg",new File(""));
-            ImageIO.write(image, "gif",new File("C:\\out.gif"));
-            ImageIO.write(image, "png",new File("C:\\out.png"));
+            ImageIO.write(image, SH.getExtension(imageURL), new File(savePath));
+            
+            logArea.appendText("\nDownloading image "+imageURL+"...");
 
         } catch (IOException e) {
         	e.printStackTrace();
         }
-        System.out.println("Done");*/
+        logArea.appendText("Done");
+        logArea.appendText("\nSaved to "+savePath);
 	}
 }

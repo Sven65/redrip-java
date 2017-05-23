@@ -1,17 +1,21 @@
 package xyz.mackan.redrip.view;
 
+import xyz.mackan.redrip.Download;
 import xyz.mackan.redrip.Reddit;
-
+import xyz.mackan.redrip.StringHelper;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.KeyEvent;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,16 +34,31 @@ public class MainController {
 	@FXML private CheckBox filetypeWEBM;
 	@FXML private CheckBox filetypeJPEG;
 	@FXML private ChoiceBox<String> sortbox;
+	@FXML private TextArea logarea;
 	
+	private ArrayList<CheckBox> extensionBoxes;
 	
 	private String reddit;
 	private int amount = 50;
 	private String sort = "hot";
 	private String after;
-	//private String lastPost;
 	
 	public MainController(){
 		
+	}
+	
+	private ArrayList<String> getExtensions(){
+		ArrayList<String> exts = new ArrayList<String>();
+		
+		for(CheckBox extensionBox : extensionBoxes){
+			if(extensionBox.isSelected()){
+				String filetype = extensionBox.getId();
+				filetype = filetype.replace("filetype", "");
+				exts.add(filetype.toLowerCase());
+			}
+		}
+		
+		return exts;
 	}
 	
 	@FXML
@@ -49,6 +68,9 @@ public class MainController {
 		
 		sortbox.setTooltip(new Tooltip("What to sort the submissions by"));
 	    sortbox.setValue("hot");
+	    
+	    extensionBoxes = new ArrayList<CheckBox>();
+	    extensionBoxes.addAll(Arrays.asList(filetypeJPG, filetypePNG, filetypeGIF, filetypeGIFV, filetypeMP4, filetypeWEBM, filetypeJPEG));
     }
 	
 	private String getReddit(String input){
@@ -83,13 +105,18 @@ public class MainController {
 		}else{
 			Reddit r = new Reddit();
 			try {
-				JSONObject jsonObj = r.getRedditData(this.reddit, this.amount, this.sort, this.after);
+				JSONObject jsonObj = r.getRedditData(this.reddit, this.amount, this.sort, this.after, this.logarea);
 				JSONObject data = (JSONObject) jsonObj.get("data");
 				JSONArray submissions = (JSONArray) data.get("children");
 				
 				
 				
-				System.out.println(submissions.toJSONString());
+				//System.out.println(submissions.toJSONString());
+				
+				StringHelper SH = new StringHelper();
+				ArrayList<String> exts = this.getExtensions();
+				
+				Download downloader = new Download();
 				
 				for(int i=0;i<submissions.size();i++){
 					JSONObject current = (JSONObject) submissions.get(i);
@@ -97,7 +124,10 @@ public class MainController {
 					Boolean isSelf = (Boolean) currentSubmission.get("is_self");
 					String url = (String) currentSubmission.get("url");
 					if(!isSelf){
-						System.out.println(url);
+						if(SH.isDirectLink(url, exts)){
+							this.logarea.appendText(String.format("\nFound file of type %s at url %s", SH.getExtension(url), url));
+							downloader.downloadFile(url, String.format("%s/%s", this.reddit, SH.getFilename(url)), this.logarea);
+						}
 					}
 				}
 			} catch (Exception e) {

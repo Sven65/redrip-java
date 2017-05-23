@@ -36,6 +36,15 @@
                   
                   <Label layoutX="14.0" layoutY="198.0" text="Sort by" />
                   <ChoiceBox id="sortbox" fx:id="sortbox" layoutX="66.0" layoutY="194.0" prefWidth="150.0" />
+                  <ScrollPane layoutX="344.0" layoutY="85.0" prefHeight="309.0" prefWidth="250.0">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <TextArea id="logarea" fx:id="logarea" editable="false" layoutX="14.0" layoutY="7.0" prefHeight="293.0" prefWidth="221.0" />
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </ScrollPane>
                   
                   
                   
