@@ -1,8 +1,10 @@
 package xyz.mackan.redrip.view;
 
 import xyz.mackan.redrip.Download;
+import xyz.mackan.redrip.Imgur;
 import xyz.mackan.redrip.Reddit;
 import xyz.mackan.redrip.StringHelper;
+import xyz.mackan.redrip.parser.Parser;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -43,6 +45,9 @@ public class MainController {
 	private String sort = "hot";
 	private String after;
 	
+	// @TODO: make this a config
+	private String IMGUR_KEY = "";
+	
 	public MainController(){
 		
 	}
@@ -71,7 +76,11 @@ public class MainController {
 	    
 	    extensionBoxes = new ArrayList<CheckBox>();
 	    extensionBoxes.addAll(Arrays.asList(filetypeJPG, filetypePNG, filetypeGIF, filetypeGIFV, filetypeMP4, filetypeWEBM, filetypeJPEG));
-    }
+    
+		for(CheckBox extensionBox : extensionBoxes){
+			extensionBox.setSelected(true);
+		}
+	}
 	
 	private String getReddit(String input){
 		String pattern = "/r/([^\\s/]+)";
@@ -106,27 +115,62 @@ public class MainController {
 			Reddit r = new Reddit();
 			try {
 				JSONObject jsonObj = r.getRedditData(this.reddit, this.amount, this.sort, this.after, this.logarea);
-				JSONObject data = (JSONObject) jsonObj.get("data");
-				JSONArray submissions = (JSONArray) data.get("children");
-				
-				
-				
-				//System.out.println(submissions.toJSONString());
-				
-				StringHelper SH = new StringHelper();
-				ArrayList<String> exts = this.getExtensions();
-				
-				Download downloader = new Download();
-				
-				for(int i=0;i<submissions.size();i++){
-					JSONObject current = (JSONObject) submissions.get(i);
-					JSONObject currentSubmission = (JSONObject) current.get("data");
-					Boolean isSelf = (Boolean) currentSubmission.get("is_self");
-					String url = (String) currentSubmission.get("url");
-					if(!isSelf){
-						if(SH.isDirectLink(url, exts)){
-							this.logarea.appendText(String.format("\nFound file of type %s at url %s", SH.getExtension(url), url));
-							downloader.downloadFile(url, String.format("%s/%s", this.reddit, SH.getFilename(url)), this.logarea);
+				if(jsonObj != null){
+					JSONObject data = (JSONObject) jsonObj.get("data");
+					JSONArray submissions = (JSONArray) data.get("children");
+						
+					StringHelper SH = new StringHelper();
+					ArrayList<String> exts = this.getExtensions();
+					
+					Download downloader = new Download();
+					
+					Imgur imgur = new Imgur(this.IMGUR_KEY);
+					Parser parser = new Parser();
+					
+					for(int i=0;i<submissions.size();i++){
+						JSONObject current = (JSONObject) submissions.get(i);
+						JSONObject currentSubmission = (JSONObject) current.get("data");
+						Boolean isSelf = (Boolean) currentSubmission.get("is_self");
+						String url = (String) currentSubmission.get("url");
+						System.out.println("Domain: "+SH.getDomain(url));
+						System.out.println("URL: "+url+"\n");
+						if(!isSelf){
+							if(SH.isImgurLink(url)){ // If it's an imgur album, download it
+								String gallery = SH.getFilename(url);
+								
+								JSONObject album = (JSONObject) imgur.getAlbumImages(gallery, this.logarea);
+								
+								long status = (long) album.get("status");
+								if(status == 200){
+									
+									this.logarea.appendText("\nFound imgur album "+gallery);
+									
+									JSONArray images = (JSONArray) album.get("data");
+									
+									for(int x=0;x<images.size();x++){
+										JSONObject image = (JSONObject) images.get(x);
+										String imageUrl = (String) image.get("link");
+										if(SH.isDirectLink(imageUrl, exts)){
+											this.logarea.appendText(String.format("\nFound file of type %s at url %s", SH.getExtension(imageUrl), imageUrl));
+											downloader.downloadFile(imageUrl, String.format("%s/%s/%s", this.reddit, gallery, SH.getFilename(imageUrl)), this.logarea);
+										}
+									}
+								}else{
+									logarea.appendText("\nUnable to find imgur album with the ID "+gallery);
+								}
+							}else{
+								if(SH.isDirectLink(url, exts)){ // If it's a direct link
+									this.logarea.appendText(String.format("\nFound file of type %s at url %s", SH.getExtension(url), url));
+									downloader.downloadFile(url, String.format("%s/%s", this.reddit, SH.getFilename(url)), this.logarea);
+								}else{
+									String parsedURL = parser.doParse(url, exts);
+									
+									if(parsedURL != null){
+										this.logarea.appendText(String.format("\nFound file of type %s at url %s", SH.getExtension(parsedURL), parsedURL));
+										downloader.downloadFile(parsedURL, String.format("%s/%s", this.reddit, SH.getFilename(parsedURL)), this.logarea);
+									}
+								}
+							}
 						}
 					}
 				}

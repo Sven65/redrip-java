@@ -10,47 +10,43 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.Alert.AlertType;
 
-public class Reddit {
+public class Imgur {
 	
+	private String API_KEY;
+	private final String API_BASE = "https://api.imgur.com/3";
 	private final String USER_AGENT = "Mozilla/5.0";
 	
-	public Reddit(){
-		
+	/**
+	 * Creates a new Imgur api wrapper
+	 * @param API_KEY
+	 */
+	public Imgur(String API_KEY){
+		this.API_KEY = API_KEY;
 	}
 	
 	/**
-	 * Gets the data from a subreddit
-	 * @param sub
-	 * @param amount
-	 * @param sort
-	 * @param after
-	 * @param log
+	 * Gets the images of an album
+	 * @param album The hash of the album to get
+	 * @param log The main GUIs log area
 	 * @return JSONObject
 	 * @throws Exception
 	 */
-	public JSONObject getRedditData(String sub, int amount, String sort, String after, TextArea log) throws Exception{
+	public JSONObject getAlbumImages(String album, TextArea log) throws Exception{
+		String API_URL = String.format("%s/album/%s/images", API_BASE, album);
 		
 		JSONParser parser = new JSONParser();
 		
-		
-		String url = String.format("https://www.reddit.com/r/%s/%s.json?limit=%d", sub, sort, amount);
-		if(after != null){
-			url += String.format("&after=t3_{}", after);
-		}
-		
 		HttpClient client = HttpClientBuilder.create().build();
-		
-		HttpGet request = new HttpGet(url);
+		HttpGet request = new HttpGet(API_URL);
 		
 		request.addHeader("User-Agent", USER_AGENT);
+		request.addHeader("Authorization", String.format("Client-ID %s", this.API_KEY));
 		
 		HttpResponse response = client.execute(request);
 
-		log.appendText("Sending 'GET' request to URL : " + url+"\n");
+		log.appendText("Sending 'GET' request to URL : " + API_URL +"\n");
 		int statusCode = response.getStatusLine().getStatusCode();
 		log.appendText("Response Code : " +statusCode+"\n");
 		
@@ -67,23 +63,6 @@ public class Reddit {
 		Object obj = parser.parse(toParse);
 		JSONObject jsonObject = (JSONObject) obj;
 		
-		if(statusCode == 200){
-			return jsonObject;
-		}else{
-			String message = (String) jsonObject.get("message");
-			String reason = (String) jsonObject.get("reason");
-			
-			if(reason.equals("null")){
-				reason = "";
-			}
-			
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("Error");
-			alert.setHeaderText("Can't access subreddit");
-			alert.setContentText(String.format("Can't access subreddit %s, %s (%s)", sub, reason, message));
-			alert.showAndWait();
-			
-			return null;
-		}
+		return jsonObject;
 	}
 }
