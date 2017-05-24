@@ -5,8 +5,8 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import xyz.mackan.redrip.StringHelper;
 import xyz.mackan.redrip.parser.filetype.GIFV;
+import xyz.mackan.redrip.util.StringHelper;
 
 public class Parser {
 	public Parser(){

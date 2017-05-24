@@ -1,10 +1,10 @@
 package xyz.mackan.redrip.view;
 
 import xyz.mackan.redrip.Download;
-import xyz.mackan.redrip.Imgur;
-import xyz.mackan.redrip.Reddit;
-import xyz.mackan.redrip.StringHelper;
 import xyz.mackan.redrip.parser.Parser;
+import xyz.mackan.redrip.util.Imgur;
+import xyz.mackan.redrip.util.Reddit;
+import xyz.mackan.redrip.util.StringHelper;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;

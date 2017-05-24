@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.*?>
 <?import javafx.scene.image.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
@@ -24,18 +25,22 @@
                   <Button id="gobutton" layoutX="494.0" layoutY="38.0" mnemonicParsing="false" onMouseClicked="#handleGoButton" text="Go" />
                   
                   <Separator layoutX="-4.0" layoutY="73.0" prefHeight="22.0" prefWidth="608.0" />
-                  
-                  <Label layoutX="14.0" layoutY="95.0" text="File Types" />
-                 
-                  <CheckBox id="filetypeJPG" fx:id="filetypeJPG" layoutX="74.0" layoutY="115.0" mnemonicParsing="false" text="JPG" />
-                  <CheckBox id="filetypePNG" fx:id="filetypePNG" layoutX="125.0" layoutY="115.0" mnemonicParsing="false" text="PNG" />
-                  <CheckBox id="filetypeGIF" fx:id="filetypeGIF" layoutX="188.0" layoutY="115.0" mnemonicParsing="false" text="GIF" />
-                  
-                  <CheckBox id="filetypeMP4" fx:id="filetypeMP4" layoutX="74.0" layoutY="143.0" mnemonicParsing="false" text="MP4" />
-                  <CheckBox id="filetypeGIFV" fx:id="filetypeGIFV" layoutX="125.0" layoutY="143.0" mnemonicParsing="false" text="GIFV" />
-                  <CheckBox id="filetypeWEBM" fx:id="filetypeWEBM" layoutX="188.0" layoutY="143.0" mnemonicParsing="false" text="WEBM" />
-                  
-                  <CheckBox id="filetypeJPEG" fx:id="filetypeJPEG" layoutX="73.0" layoutY="168.0" mnemonicParsing="false" text="JPEG" />
+                  <Group id="Filetype-container">
+                     <children>
+                        <CheckBox id="filetypeGIF" fx:id="filetypeGIF" layoutX="188.0" layoutY="115.0" mnemonicParsing="false" text="GIF" />
+                        <CheckBox id="filetypeWEBM" fx:id="filetypeWEBM" layoutX="188.0" layoutY="143.0" mnemonicParsing="false" text="WEBM" />
+                        <CheckBox id="filetypeGIFV" fx:id="filetypeGIFV" layoutX="125.0" layoutY="143.0" mnemonicParsing="false" text="GIFV" />
+                       
+                                          <CheckBox id="filetypeJPG" fx:id="filetypeJPG" layoutX="74.0" layoutY="115.0" mnemonicParsing="false" text="JPG" />
+                        
+                                          <CheckBox id="filetypeMP4" fx:id="filetypeMP4" layoutX="74.0" layoutY="143.0" mnemonicParsing="false" text="MP4" />
+                        
+                        <Label layoutX="14.0" layoutY="95.0" text="File Types" />
+                        <CheckBox id="filetypePNG" fx:id="filetypePNG" layoutX="125.0" layoutY="115.0" mnemonicParsing="false" text="PNG" />
+                        
+                                          <CheckBox id="filetypeJPEG" fx:id="filetypeJPEG" layoutX="73.0" layoutY="168.0" mnemonicParsing="false" text="JPEG" />
+                     </children>
+                  </Group>
                   
                   <Label layoutX="14.0" layoutY="198.0" text="Sort by" />
                   <ChoiceBox id="sortbox" fx:id="sortbox" layoutX="66.0" layoutY="194.0" prefWidth="150.0" />

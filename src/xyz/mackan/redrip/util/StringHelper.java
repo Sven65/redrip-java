@@ -1,4 +1,4 @@
-package xyz.mackan.redrip;
+package xyz.mackan.redrip.util;
 
 import java.net.URI;
 import java.net.URISyntaxException;
