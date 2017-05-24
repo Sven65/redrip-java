@@ -196,13 +196,16 @@ public class MainController {
 										
 										String imageURL = (String) imageData.get("link");
 										
-										if(SH.isDirectLink(imageURL, exts)){
-											
-											this.logarea.appendText(String.format("\nFound file of type %s at url %s", SH.getExtension(imageURL), imageURL));
-											if(gifvToMP4.isSelected() && SH.getExtension(imageURL).equals("gifv")){
-												imageURL = parser.gifvToMP4(imageURL);
+										if(imageURL != null){
+										
+											if(SH.isDirectLink(imageURL, exts)){
+												
+												this.logarea.appendText(String.format("\nFound file of type %s at url %s", SH.getExtension(imageURL), imageURL));
+												if(gifvToMP4.isSelected() && SH.getExtension(imageURL).equals("gifv")){
+													imageURL = parser.gifvToMP4(imageURL);
+												}
+												downloader.downloadFile(imageURL, String.format("%s/%s", this.reddit, SH.getFilename(imageURL)), this.logarea);
 											}
-											downloader.downloadFile(imageURL, String.format("%s/%s", this.reddit, SH.getFilename(imageURL)), this.logarea);
 										}
 										
 										//System.out.println(image.toJSONString());
